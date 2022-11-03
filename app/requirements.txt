@@ -1,0 +1,8 @@
+pollination-streamlit>=0.5.0
+pollination-streamlit-viewer>=0.4.7
+pollination-streamlit-io>=0.47.2
+
+ladybug-charts==1.18.3
+honeybee-vtk==0.38.6
+ladybug-vtk==0.10.0
+streamlit==1.14.0
