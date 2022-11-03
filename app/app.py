@@ -14,7 +14,7 @@ from pollination_streamlit_viewer import viewer
 import json
 import requests
 from pollination_streamlit.selectors import get_api_client
-from pollination_streamlit_io import (recipe_inputs_form, select_recipe, study_card, select_study, select_run, select_cloud_artifact)
+from pollination_streamlit_io import (recipe_inputs_form, select_recipe, study_card, select_study, select_run, select_cloud_artifact, send_results)
 
 st.set_page_config(
     page_title='epw visualization',
@@ -99,6 +99,18 @@ with sunpath_tab:
 
         # view the 3D sunpath
         viewer(key='sunpath-viewer', content=sunpath_vtkjs.read_bytes())
+
+        sunpath_vis_set = sunpath.to_vis_set().to_dict()
+        # st.json(sunpath_vis_set or '{}')
+        
+        send_results(
+          'send-results',
+          results=sunpath_vis_set,
+          options={
+            "add": False,
+            "delete": False
+          }
+        )
 
 with direct_sunlight_tab:
 
