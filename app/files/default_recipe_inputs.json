@@ -1,30 +1,30 @@
 {
-  "cpu-count" : {
-      "hidden": true,
-      "value": 50
+  "cpu-count": {
+    "hidden": true,
+    "value": 50
   },
-  "grid-filter" : {
-      "hidden": true,
-      "value": "*"
+  "grid-filter": {
+    "hidden": true,
+    "value": "*"
   },
-  "min-sensor-count" : {
-      "hidden": true,
-      "value": 500
+  "min-sensor-count": {
+    "hidden": true,
+    "value": 500
   },
-  "north" : {
-      "hidden": true,
-      "value": 0
+  "north": {
+    "hidden": true,
+    "value": 0
   },
-  "timestep" : {
-      "hidden": true,
-      "value": 1
+  "timestep": {
+    "hidden": true,
+    "value": 1
   },
-  "wea" : {
-      "hidden": true,
-      "value": {
-          "key": "USA_MO_St.Louis-Lambert.Intl.AP.724340_TMY3.wea",
-          "file_type": "file",
-          "file_name": "USA_MO_St.Louis-Lambert.Intl.AP.724340_TMY3.wea"
-      }
+  "wea": {
+    "hidden": false,
+    "value": {
+      "key": "weather.wea",
+      "file_type": "file",
+      "file_name": "weather.wea"
+    }
   }
 }

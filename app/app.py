@@ -24,6 +24,10 @@ st.set_page_config(
 # for interacting with Pollination Cloud
 api_client = get_api_client()
 
+# project owner & project
+project_owner = 'ladybug-tools'
+project_name = 'aec-tech-2022'
+
 @st.cache(allow_output_mutation=True, suppress_st_warning=True)
 def load_epw(epw_file):
     epw = EPW(epw_file.as_posix())
@@ -56,8 +60,8 @@ def create_charts(epw_file):
 
 
 st.write('# Early Design App')
-epw_viz_tab, sunpath_tab, direct_sunlight_tab = \
-    st.tabs(['Weather data', 'Sunpath', 'Direct sunlight'])
+epw_viz_tab, sunpath_tab, get_hbjson_model, direct_sunlight_tab = \
+    st.tabs(['Weather data', 'Sunpath', 'Get Hbjson Model', 'Direct sunlight'])
 
 epw_file = None
 __here__ = pathlib.Path(__file__)
@@ -112,6 +116,18 @@ with sunpath_tab:
           }
         )
 
+with get_hbjson_model:
+    hbjson = select_cloud_artifact(
+      'sel-hbjson-model',
+      api_client,
+      project_name = project_name,
+      project_owner = project_owner,
+      study_id = '',
+      file_name_match = ".hbjson*",
+    )
+
+    st.write(hbjson)
+
 with direct_sunlight_tab:
 
     direct_sun_hours = open('files/direct_sunlight_hours.json')
@@ -125,10 +141,6 @@ with direct_sunlight_tab:
 
     st.header('Create a new study on Pollination Cloud')
     st.info("""Select a Recipe, enter inputs and create a study. View the new study, or any previously created study under the View Study tab.""")
-
-    # project owner & project
-    project_owner = 'ladybug-tools'
-    project_name = 'demo'
 
     # Content that will be viewed by pollination-viewer
     if 'response' not in st.session_state:
