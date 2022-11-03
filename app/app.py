@@ -24,18 +24,34 @@ st.set_page_config(
 # for interacting with Pollination Cloud
 api_client = get_api_client()
 
+# project owner & project
+project_owner = 'ladybug-tools'
+project_name = 'demo'
+
+if 'test' not in st.session_state:
+    st.session_state['test'] = None
+
 @st.cache(allow_output_mutation=True, suppress_st_warning=True)
 def load_epw(epw_file):
     epw = EPW(epw_file.as_posix())
     return epw
 
-@st.cache(allow_output_mutation=True, suppress_st_warning=True)
+# @st.cache(allow_output_mutation=True, suppress_st_warning=True)
 def create_wea(epw_file: str, folder: pathlib.Path):
     epw = load_epw(epw_file)
     fp = folder.joinpath(f'{epw.location.city}.wea')
     epw.to_wea(fp.as_posix())
+    
     # upload wea to pollination cloud and store FileMeta for use in the Recipe
-    # api_client.get(path="/projects/ladybug-tools/demo/artifacts")
+    response = api_client.get(
+        path=f'/projects/{project_owner}/{project_name}/artifacts',
+        params={
+            "key": "weather.wea",
+        }
+    )
+
+    st.session_state['test'] = response
+
     # https://api.pollination.cloud/docs#/Artifacts/create_artifact
     return fp
 
@@ -97,6 +113,8 @@ with sunpath_tab:
             radius=100
         )
 
+        # sunpath.to_vis_set()
+
         # view the 3D sunpath
         viewer(key='sunpath-viewer', content=sunpath_vtkjs.read_bytes())
 
@@ -113,10 +131,6 @@ with direct_sunlight_tab:
 
     st.header('Create a new study on Pollination Cloud')
     st.info("""Select a Recipe, enter inputs and create a study. View the new study, or any previously created study under the View Study tab.""")
-
-    # project owner & project
-    project_owner = 'ladybug-tools'
-    project_name = 'demo'
 
     # Content that will be viewed by pollination-viewer
     if 'response' not in st.session_state:
@@ -225,3 +239,5 @@ with direct_sunlight_tab:
                     "pollination-viewer",
                     content=st.session_state['response'],
                 )
+
+st.json(st.session_state['test'] or '{}')
